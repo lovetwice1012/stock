@@ -1,12 +1,17 @@
-name: Renametag
-main: Lovetwice1012\Renametug\Main
-version: 2.0.0
+name: Stock
+main: Lovetwice1012\Stock\Main
+version: 1.0.0
 api: [3.0.0, 4.0.0]
-load: POSTWORLD
 author: Lovetwice1012
-description: 頭の上変更
+description: 株取引を追加
 
 commands:
-  atama:
-    description: 頭の上を変更します。
-    usage: /atama 変更したいユーザーの名前　変更後の頭の上に表示される文章
+  sellstock:
+    description: 株を売ります。
+    usage: /sellstock amount
+  buystock:
+    description: 株を買います。
+    usage: /buystock amount
+  checkstock:
+    description: 現在の株価を確認ます。
+    usage: /checkstock
