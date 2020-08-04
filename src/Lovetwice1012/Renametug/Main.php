@@ -1,6 +1,6 @@
 <?php
 
-namespace Lovetwice1012\Renametug;
+namespace Lovetwice1012\stock;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -10,59 +10,68 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
 use pocketmine\utils\Config;
 
-class Main extends PluginBase implements Listener{
-
-	private $fly;
-	public $myConfig;
+class Main extends PluginBase implements Listener {
+	
+	public $config;
 		       
 	public function onEnable(){
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		$this->myConfig = new Config($this->getDataFolder() . "stock.yml", Config::YAML);
-	}
-
-	public function onJoin(PlayerJoinEvent $event){
-		$config = $this->myConfig;
-  $player = $event->getPlayer();
-  /** @var Config $config */
-  if($config->exists($player->getName())){
-	  $player->setNameTag($config->get($player->getName()));
-	  $player->setDisplayName($config->get($player->getName()));
-  }		
+		if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI") != null){
+                $this->EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+                }else{
+                $this->getLogger()->warning("Economy API is not found.");
+                $this->getServer()->getPluginManager()->disablePlugin($this);
+                }
+		$this->config1 = new Config($this->getDataFolder() . "stock.yml", Config::YAML);
+		$time = 5; 
+                $this->getScheduler()->scheduleRepeatingTask(new TimeTask($this->config1), $time);
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
 	{
-		$config = $this->myConfig;
-        if ($label === "atama") {
-            if ($sender->isOp()) {
-		if(isset($args[0])){
-		if(isset($args[1])){    
-			$player = $this->getServer()->getPlayer($args[0]);
-                    $tag = $args[1]; 
-		    $config->set($player->getName(), "[§d".$tag."§r]".$player->getName());
-		    $config->save();
-		    $player->setNameTag("[§d".$tag."§r]".$player->getName());
-		    $player->setDisplayName("[§d".$tag."§r]".$player->getName());
-		}else{
-			$player = $this->getServer()->getPlayer($args[0]);
-			$config->set($player->getName(),$player->getName());
-			$config->save();
-               
-                $player->setNameTag($player->getName());
-                $player->setDisplayName($player->getName());
-		}
-	    	    $sender->sendMessage("頭の上の名前表示が".$config->get($player->getName())."になりました");
-		}else{
-	
-		    $sender->sendMessage("§c使用方法:/atama 変更したい人の名前　変更後の名前");
-			}
-		
-            }else{
-	        $sender->sendMessage("§c権限がありません");
-	    }
-	
-        }
-        return true;
+		$config = $this->config;
+                switch($label){
+			case "sellstock":
+			    if(!isset($args[0])){
+				$sender->sendMessage("§4使用法: /sellstock amount");
+				return true;
+			    }
+			    $havestock = $config->get($sender->getName()); 
+			    $amount = $args[0];
+			    if($havestock<$amount){
+				$sender->sendMessage("§4所持株数が足りません。");    
+				return true;
+			    }
+			    $downprice = floor($amount/2);
+			    $this->EconomyAPI->addMoney($sender->getName(),$config->get("price")*$amount);
+		            $config->set("price",$config->get("price")-$downprice);    
+			    $config->set($sender->getName,$havestock-$amount);
+			    $sender->sendMessage("株を売却しました。");
+			    break;
+		       	case "buystock":
+			    if(!isset($args[0])){
+				$sender->sendMessage("§4使用法: /buystock amount");
+				return true;
+			    }
+			    $money = $this->EconomyAPI->myMoney($sender->getName());
+			    $havestock = $config->get($sender->getName()); 
+			    $amount = $args[0];
+			    $price = $config->get("price");
+			    if($money<$price*$amount){
+				$sender->sendMessage("§4所持金が足りません。");    
+				return true;
+			    }
+			    $upprice = floor($amount/2);
+			    $this->EconomyAPI->reduceMoney($sender->getName(),$price*amount);
+		            $config->set("price",$config->get("price")+$upprice);    
+			    $config->set($sender->getName,$havestock+$amount);
+			    $sender->sendMessage("株を売却しました。");
+			    break;
+			case "stock":	
+		            $sender->sendMessage("現在の株価は ".$config->get("price")." 円です。");
+			    break;
+		} 
+                return true;
     }
 
 }
