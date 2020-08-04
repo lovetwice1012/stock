@@ -66,7 +66,7 @@ class Main extends PluginBase implements Listener {
 				return true;
 			    }
 			    $upprice = floor($amount/2);
-			    $this->EconomyAPI->reduceMoney($sender->getName(),$price*amount);
+			    $this->EconomyAPI->reduceMoney($sender->getName(),$price*$amount);
 		            $config->set("price",$config->get("price")+$upprice);    
 			    $config->set($sender->getName,$havestock+$amount);
 			    $sender->sendMessage("株を購入しました。");
