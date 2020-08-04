@@ -12,7 +12,7 @@ use pocketmine\scheduler\Task;
 
 class Main extends PluginBase implements Listener {
 	
-	public $config;
+	public $config1;
 		       
 	public function onEnable(){
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -29,7 +29,7 @@ class Main extends PluginBase implements Listener {
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
 	{
-		$config = $this->config;
+		$config = $this->config1;
                 switch($label){
 			case "sellstock":
 			    if(!isset($args[0])){
