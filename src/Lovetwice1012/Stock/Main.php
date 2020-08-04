@@ -83,7 +83,7 @@ class Main extends PluginBase implements Listener {
 
 class TimeTask extends Task
 {
-    public $config
+    public $config;
 	    
     public function __construct(Main $main)
     {    
