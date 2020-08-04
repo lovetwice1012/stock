@@ -84,9 +84,9 @@ class Main extends PluginBase implements Listener {
 class TimeTask extends Task
 {
 
-    public function __construct()
+    public function __construct(Main $main)
     {    
-        $this->config = new Config(getDataFolder() . "stock.yml", Config::YAML);
+        $this->config = $main->config1;
     }
 
     public function onRun(int $ticks)
