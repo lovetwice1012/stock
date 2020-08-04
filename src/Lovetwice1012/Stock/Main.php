@@ -49,7 +49,7 @@ class Main extends PluginBase implements Listener {
 			    }else{
 				    $config->set("price",1);    
 			    }
-			    $config->set($sender->getName,$havestock-$amount);
+			    $config->set($sender->getName(),$havestock-$amount);
 			    $sender->sendMessage("株を売却しました。");
 			    break;
 		       	case "buystock":
