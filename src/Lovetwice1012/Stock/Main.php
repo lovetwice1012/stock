@@ -85,8 +85,8 @@ class TimeTask extends Task
 {
 
     public function __construct()
-    { 
-        $this->config = new Config(PluginBase::getDataFolder() . "stock.yml", Config::YAML);
+    {    
+        $this->config = new Config(getDataFolder() . "stock.yml", Config::YAML);
     }
 
     public function onRun(int $ticks)
