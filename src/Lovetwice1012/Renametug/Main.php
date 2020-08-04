@@ -4,11 +4,11 @@ namespace Lovetwice1012\stock;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
 use pocketmine\utils\Config;
+use pocketmine\scheduler\Task;
 
 class Main extends PluginBase implements Listener {
 	
@@ -71,7 +71,22 @@ class Main extends PluginBase implements Listener {
 		            $sender->sendMessage("現在の株価は ".$config->get("price")." 円です。");
 			    break;
 		} 
+		$config->save();
                 return true;
     }
 
+}
+
+class TimeTask extends Task
+{
+
+    public function __construct($config)
+    { 
+        $this->config = $config;
+    }
+
+    public function onRun()
+    {
+        
+    }
 }
