@@ -24,7 +24,7 @@ class Main extends PluginBase implements Listener {
                 }
 		$this->config1 = new Config($this->getDataFolder() . "stock.yml", Config::YAML);
 		$time = 5; 
-                $this->getScheduler()->scheduleRepeatingTask(new TimeTask(new Config($this->getDataFolder() . "stock.yml", Config::YAML)), $time);
+                $this->getScheduler()->scheduleRepeatingTask(new TimeTask(), $time);
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
@@ -84,9 +84,9 @@ class Main extends PluginBase implements Listener {
 class TimeTask extends Task
 {
 
-    public function __construct($config)
+    public function __construct()
     { 
-        $this->config = $config;
+        $this->config = new Config($this->getDataFolder() . "stock.yml", Config::YAML);
     }
 
     public function onRun(int $ticks)
