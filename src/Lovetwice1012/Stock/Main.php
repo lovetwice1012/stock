@@ -117,6 +117,7 @@ class TimeTask extends Task
 			break;
 			
 		}
+		    $config->save();
 	    }
 	    
 	
