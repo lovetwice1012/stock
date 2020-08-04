@@ -89,7 +89,7 @@ class TimeTask extends Task
         $this->config = $config;
     }
 
-    public function onRun()
+    public function onRun(int $ticks)
     {
     	    function trade(){
 	    	$config=$this->config;
