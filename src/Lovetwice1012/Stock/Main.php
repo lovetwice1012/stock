@@ -24,7 +24,7 @@ class Main extends PluginBase implements Listener {
                 }
 		$this->config1 = new Config($this->getDataFolder() . "stock.yml", Config::YAML);
 		$time = 5; 
-                $this->getScheduler()->scheduleRepeatingTask(new TimeTask(), $time);
+                $this->getScheduler()->scheduleRepeatingTask(new TimeTask($this), $time);
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
