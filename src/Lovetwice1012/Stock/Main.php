@@ -73,6 +73,7 @@ class Main extends PluginBase implements Listener {
 			    break;
 			case "checkstock":	
 		            $sender->sendMessage("現在の株価は ".$config->get("price")." 円です。");
+			    $sender->sendMessage("あなたは現在 ".$config->get($sender->getName())." 株持っています。");
 			    break;
 		} 
 		$config->save();
