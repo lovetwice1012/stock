@@ -44,7 +44,11 @@ class Main extends PluginBase implements Listener {
 			    }
 			    $downprice = floor($amount/2);
 			    $this->EconomyAPI->addMoney($sender->getName(),$config->get("price")*$amount);
-		            $config->set("price",$config->get("price")-$downprice);    
+			    if($config->get("price")-$downprice>0){
+		                    $config->set("price",$config->get("price")-$downprice);    
+			    }else{
+				    $config->set("price",1);    
+			    }
 			    $config->set($sender->getName,$havestock-$amount);
 			    $sender->sendMessage("株を売却しました。");
 			    break;
@@ -65,7 +69,7 @@ class Main extends PluginBase implements Listener {
 			    $this->EconomyAPI->reduceMoney($sender->getName(),$price*amount);
 		            $config->set("price",$config->get("price")+$upprice);    
 			    $config->set($sender->getName,$havestock+$amount);
-			    $sender->sendMessage("株を売却しました。");
+			    $sender->sendMessage("株を購入しました。");
 			    break;
 			case "stock":	
 		            $sender->sendMessage("現在の株価は ".$config->get("price")." 円です。");
@@ -87,6 +91,37 @@ class TimeTask extends Task
 
     public function onRun()
     {
-        
+    	    function trade(){
+	    	$config=$this->config;
+		$mode=random_int(1,3);
+		switch($mode){
+			case 1:
+			    $bigbomb=random_int(1,50);
+			    if($bigbomb===1){
+				$config->set("price",$config->get("price")+random_int(1000,5000));  
+			    }else{
+			        $config->set("price",$config->get("price")+random_int(10,50));  
+			    }
+			break;
+			case 2:
+			    $bigbomb=random_int(1,50);
+			    if($bigbomb===1){
+				$config->set("price",floor($config->get("price")/3));  
+			    }else{
+				if($config->get("price")-50>0){
+			            $config->set("price",$config->get("price")-random_int(10,50));  
+				}
+			    }
+		        break;
+			case 3:
+			break;
+			
+		}
+	    }
+	    
+	
+            trade();
+            
     }
+    
 }
