@@ -92,7 +92,7 @@ class TimeTask extends Task
 
     public function onRun(int $ticks)
     {
-    	    function trade(){
+    	    
 	    	$config=$this->config;
 		$mode=random_int(1,3);
 		switch($mode){
@@ -119,10 +119,10 @@ class TimeTask extends Task
 			
 		}
 		    $config->save();
-	    }
+	    
 	    
 	
-            trade();
+            
             
     }
     
